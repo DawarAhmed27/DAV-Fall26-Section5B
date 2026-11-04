@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lab 8 - Task 2: Bars (first attempt)</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: white; }
+  </style>
+</head>
+<body>
+  <h2>GDP per capita by country (first attempt, before debugging)</h2>
+  <div id="chart"></div>
+
+  <script>
+    // Task 2, steps 1 to 5 exactly as written in the manual
+    const margin = { top: 20, right: 30, bottom: 40, left: 110 };
+    const width = 700 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    const svg = d3.select("#chart")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    d3.csv("dataset/gapminder.csv", d3.autoType).then(data => {
+
+      console.log("rows loaded:", data.length);
+
+      // bar length = gdpPercap, from 0 to the largest income
+      const x = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.gdpPercap)])
+        .range([0, width]);
+
+      // countries on the left
+      const y = d3.scaleBand()
+        .domain(data.map(d => d.country))
+        .range([0, height])
+        .padding(0.1);
+
+      svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x));
+
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+      // one rect for each row, starting at x = 0
+      svg.selectAll("rect")
+        .data(data)
+        .join("rect")
+        .attr("x", 0)
+        .attr("y", d => y(d.country))
+        .attr("width", d => x(d.gdpPercap))
+        .attr("height", y.bandwidth())
+        .attr("fill", "steelblue");
+    });
+  </script>
+</body>
+</html>

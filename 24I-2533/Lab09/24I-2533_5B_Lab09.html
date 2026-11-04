@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab 09 - Hierarchies, Networks and Maps (24I-2533, 5B)</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: #222222;
+      margin: 0;
+      padding: 20px 40px 60px;
+    }
+    h1 { font-size: 24px; margin-bottom: 4px; }
+    .subtitle { color: #666666; margin-top: 0; }
+    section {
+      border-top: 1px solid #dddddd;
+      padding-top: 16px;
+      margin-top: 28px;
+    }
+    h2 { font-size: 18px; margin: 0 0 4px; }
+    .note { color: #666666; font-size: 13px; margin: 0 0 10px; }
+    svg { display: block; max-width: 100%; height: auto; background: #ffffff; }
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: #ffffff;
+      border: 1px solid #999999;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 13px;
+      line-height: 1.4;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Lab 09: Hierarchical, Network and Geospatial Visualization</h1>
+  <p class="subtitle">Dawar Ahmed, 24I-2533, Section 5B</p>
+
+  <section>
+    <h2>Task 1: Course Enrollment Treemap</h2>
+    <p class="note">Area of each rectangle = number of students. Hover a rectangle for details.</p>
+    <div id="treemap"></div>
+  </section>
+
+  <section>
+    <h2>Task 2: University Structure Dendrogram</h2>
+    <p class="note">Click a department node to collapse or expand its courses.</p>
+    <div id="dendrogram"></div>
+  </section>
+
+  <section>
+    <h2>Task 3: Flight Route Network</h2>
+    <p class="note">Line width = flights per week, circle size = number of routes. Drag the cities, hover to highlight routes.</p>
+    <div id="network"></div>
+  </section>
+
+  <section>
+    <h2>Task 4: World Population Choropleth</h2>
+    <p class="note">Countries colored by population (square-root scale). Gray = no data.</p>
+    <div id="choropleth"></div>
+  </section>
+
+  <section>
+    <h2>Task 5: Pakistan Cities Point Map</h2>
+    <p class="note">Circle area = city population. Only cities above 1 million are labelled; hover any circle for details.</p>
+    <div id="pointmap"></div>
+  </section>
+
+  <section>
+    <h2>Task 6: Combined Spatial Encoding Map</h2>
+    <p class="note">Cities, populations and weekly flight routes on one map. Hover a city to highlight its routes.</p>
+    <div id="combined"></div>
+  </section>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
