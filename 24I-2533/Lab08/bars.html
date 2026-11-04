@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lab 8 - Task 2: Bars</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: white; max-width: 900px; }
+    table { border-collapse: collapse; margin-bottom: 16px; }
+    td, th { border: 1px solid #999; padding: 6px 10px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h2>Task 2: Comparing countries by income</h2>
+
+  <h3>Debugging the first attempt (bars_broken.html)</h3>
+  <table>
+    <tr><th>Tab</th><th>What I found</th></tr>
+    <tr><td>Console</td><td>No red error message. The code runs, so the problem is in the logic, not the syntax.</td></tr>
+    <tr><td>Network</td><td>gapminder.csv loaded with status 200, so the file path is correct.</td></tr>
+    <tr><td>Elements</td><td>There are 1704 &lt;rect&gt; elements inside the &lt;svg&gt;, and one rect has a height of about 2 pixels.</td></tr>
+  </table>
+
+  <h3>Answers</h3>
+  <p>1. I expected 142 rects, one per country, but got 1704, because the dataset has 12 rows per country (one for each year from 1952 to 2007) and D3 draws one rect for every row, so 12 bars are stacked on top of each other for each country.</p>
+  <p>2. One bar is only about 2 pixels tall because 142 countries are squeezed into a 340 pixel high chart, so the names overlap and cannot be read.</p>
+  <p>3. After the first fix (keeping only 2007) there are 142 bars, but the chart is still hard to read, so I made the chart taller (18 pixels per country) and sorted the bars from richest to poorest so the order means something.</p>
+  <p>4. Norway is not in the top 10 if you only use .slice(0, 10), because without sorting it just takes the first 10 rows in alphabetical order (Afghanistan, Albania, Algeria and so on); the missing step is sorting by gdpPercap from highest to lowest before slicing.</p>
+
+  <h3>Top 10 richest countries, 2007</h3>
+  <div id="top10"></div>
+
+  <h3>All 142 countries, 2007 (fixed chart)</h3>
+  <div id="chart"></div>
+
+  <script>
+    d3.csv("dataset/gapminder.csv", d3.autoType).then(data => {
+
+      // Fix 1: keep one year only, so there is one row per country
+      const data2007 = data.filter(d => d.year === 2007);
+
+      // Fix 2: sort from richest to poorest
+      data2007.sort((a, b) => b.gdpPercap - a.gdpPercap);
+
+      console.log("countries in 2007:", data2007.length);
+
+      // Question 4: top 10 needs sort first, then slice
+      const top10 = data2007.slice(0, 10);
+
+      drawBars("#top10", top10, 25);
+      drawBars("#chart", data2007, 18);
+    });
+
+    // draws a horizontal bar chart; rowHeight sets how tall each bar's row is
+    function drawBars(target, rows, rowHeight) {
+      const margin = { top: 30, right: 30, bottom: 20, left: 110 };
+      const width = 700 - margin.left - margin.right;
+      const height = rows.length * rowHeight;
+
+      const svg = d3.select(target)
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      const x = d3.scaleLinear()
+        .domain([0, d3.max(rows, d => d.gdpPercap)])
+        .range([0, width]);
+
+      const y = d3.scaleBand()
+        .domain(rows.map(d => d.country))
+        .range([0, height])
+        .padding(0.2);
+
+      // x axis on top so it is visible without scrolling to the bottom
+      svg.append("g")
+        .call(d3.axisTop(x));
+
+      svg.append("g")
+        .call(d3.axisLeft(y));
+
+      svg.selectAll("rect")
+        .data(rows, d => d.country)
+        .join("rect")
+        .attr("x", 0)
+        .attr("y", d => y(d.country))
+        .attr("width", d => x(d.gdpPercap))
+        .attr("height", y.bandwidth())
+        .attr("fill", "steelblue");
+    }
+  </script>
+</body>
+</html>

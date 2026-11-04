@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab 10 - PM2.5 Time Series 2025</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+    body { background: #ffffff; color: #222; font-family: Arial, sans-serif; margin: 20px 40px; }
+    h1 { margin-bottom: 4px; }
+    section { margin-bottom: 40px; border-bottom: 1px solid #ddd; padding-bottom: 20px; }
+    .question { color: #555; font-style: italic; margin-top: 0; }
+    .subtitle { font-weight: bold; color: #333; margin: 4px 0 10px; }
+    .note { color: #444; font-size: 14px; }
+    .axis-label { font-size: 12px; fill: #333; }
+    .chart-text { font-size: 12px; fill: #222; }
+    button { padding: 6px 14px; margin: 6px 0; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Air Quality in the Capital, 2025 (PM2.5)</h1>
+  <p class="note">City Environment Office. Daily PM2.5 (µg/m³) at a city-centre and a suburb station.</p>
+
+  <section>
+    <h2>Task 1: Data check</h2>
+    <div id="task1"></div>
+  </section>
+
+  <section>
+    <h2>Task 2: Daily city PM2.5 through 2025</h2>
+    <p class="question">How did PM2.5 in the city centre change through the year?</p>
+    <p class="subtitle" id="task2-sub"></p>
+    <div id="task2"></div>
+  </section>
+
+  <section>
+    <h2>Task 3: Build-up of unhealthy days (above 75 µg/m³)</h2>
+    <p class="question">How quickly did unhealthy days build up during the year?</p>
+    <p class="subtitle" id="task3-sub"></p>
+    <div id="task3"></div>
+  </section>
+
+  <section>
+    <h2>Task 4: City centre vs suburb</h2>
+    <p class="question">Does the suburb behave like the city centre?</p>
+    <div id="task4"></div>
+  </section>
+
+  <section>
+    <h2>Task 5: Days per pollution level in each month</h2>
+    <p class="question">In each month, how are the days split between pollution levels?</p>
+    <div id="task5"></div>
+    <p class="note" id="task5-note"></p>
+  </section>
+
+  <section>
+    <h2>Task 6: Average city PM2.5 by month and day of week</h2>
+    <p class="question">Is pollution tied to the day of the week, the month, or both?</p>
+    <div id="task6"></div>
+  </section>
+
+  <section>
+    <h2>Task 7: Monthly spread (minimum to maximum) with mean</h2>
+    <p class="question">How wide is the gap between the best and worst day in each month?</p>
+    <div id="task7"></div>
+  </section>
+
+  <section>
+    <h2>Task 8: 7-day moving average and data gap</h2>
+    <p class="question">What is the trend once daily noise is removed, and was the sensor working all year?</p>
+    <div id="task8"></div>
+    <p class="note" id="task8-note"></p>
+  </section>
+
+  <section>
+    <h2>Task 9: Zoom into any period</h2>
+    <p class="question">Can the Director pick any period and look at it closely?</p>
+    <p class="note">Drag on the small overview chart to select a range. The main chart zooms to those dates.</p>
+    <button id="reset-btn">Reset (full year)</button>
+    <div id="task9"></div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
